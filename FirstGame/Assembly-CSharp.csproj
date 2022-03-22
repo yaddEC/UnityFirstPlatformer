@@ -57,7 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Movement.cs" />
-    <Compile Include="Assets\ZomBehavior.cs" />
+    <Compile Include="Assets\Scripts\ZomBehavior.cs" />
+    <Compile Include="Assets\Scripts\HeadCollision.cs" />
+    <Compile Include="Assets\Scripts\BetweenEnemiesHitbox.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

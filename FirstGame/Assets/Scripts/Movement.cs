@@ -11,15 +11,16 @@ public class Movement : MonoBehaviour
     public LayerMask groundLayer;
  
     public float GroundDistance = 5.1f;
-    public float JumpHeight = 2f;
-    [Range(0, 100f)] [SerializeField] private float speed = 0f;
+    public float JumpHeight = 5f;
+    [Range(0, 100f)] [SerializeField] private float speed = 40f;
+
     private float gravity;
 
 
-    float horizontal = 0f;
+    public float horizontal = 0f;
     
     public bool isGrounded ;
-    float radius;
+    
 
     public Vector3 pos;
 
@@ -27,7 +28,7 @@ public class Movement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         CapsuleCollider = GetComponent<CapsuleCollider>();
-    
+        
     }
 
 
