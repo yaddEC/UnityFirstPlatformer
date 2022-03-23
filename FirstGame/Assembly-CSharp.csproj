@@ -57,9 +57,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Movement.cs" />
-    <Compile Include="Assets\Scripts\ZomBehavior.cs" />
     <Compile Include="Assets\Scripts\HeadCollision.cs" />
-    <Compile Include="Assets\Scripts\BetweenEnemiesHitbox.cs" />
+    <Compile Include="Assets\Scripts\ZomBehavior.cs" />
+    <Compile Include="Assets\Scripts\CameraMovement.cs" />
+    <Compile Include="Assets\Scripts\Bumper.cs" />
+    <Compile Include="Assets\Scripts\FollowerBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

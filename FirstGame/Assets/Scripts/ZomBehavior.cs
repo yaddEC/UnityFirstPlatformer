@@ -7,11 +7,11 @@ public class ZomBehavior : MonoBehaviour
     // Start is called before the first frame update
     private Rigidbody rb;
     private CapsuleCollider CapsuleCollider;
-    public LayerMask groundLayer;
+    public LayerMask edgeLayer;
     float horizontal = 7f;
     public bool EdgeOrWall = false;
-    public bool isEnemy = false;
     Vector3 pos;
+    Ray ray;
     Vector3 dir= Vector3.forward;
     Vector3 rotation = new Vector3(0, 180, 0);
    
@@ -24,10 +24,10 @@ public class ZomBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        pos = transform.position +dir * CapsuleCollider.radius /*+ Vector3.back * CapsuleCollider.radius*/;
-        EdgeOrWall = (Physics.CheckSphere(pos, CapsuleCollider.radius, groundLayer));
+       
+        EdgeOrWall = Physics.Raycast(transform.position + dir * 0.8f, dir,0.2f, edgeLayer);
 
-        if (EdgeOrWall && isEnemy)
+        if (EdgeOrWall)
         {
             horizontal *=-1;
             dir*=-1;
@@ -42,7 +42,7 @@ public class ZomBehavior : MonoBehaviour
     void FixedUpdate()
     {
         float moveFactor = horizontal * Time.fixedDeltaTime;
-
+        Debug.DrawRay(ray.origin, ray.direction * 10);
 
         rb.velocity = new Vector3(0, 0, moveFactor * 10f);
 
