@@ -8,9 +8,17 @@ public class FollowerBehavior : MonoBehaviour
     private CapsuleCollider CapsuleCollider;
     public LayerMask edgeLayer;
     public LayerMask groundLayer;
-    float horizontal = 7f;
+    public LayerMask playerLayer;
+    private bool isNear;
+    public float JumpHeight = 5f;
+    public float walkingSpeed=10;
+    public float followingSpeed = 25;
+    public float detectionZone = 6.5f;
+    public Transform target;
+    float horizontal=1;
     public bool EdgeOrWall = false;
     public bool isGrounded;
+    public bool jumped=false;
     public float gravity;
     Vector3 pos;
     Ray ray;
@@ -21,36 +29,91 @@ public class FollowerBehavior : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         CapsuleCollider = GetComponent<CapsuleCollider>();
+    
     }
 
     // Update is called once per frame
     void Update()
     {
-        pos = transform.position + Vector3.up * CapsuleCollider.radius;
+        pos = transform.position + (Vector3.up * 0.9f) * CapsuleCollider.radius;
         isGrounded = Physics.CheckSphere(pos, CapsuleCollider.radius, groundLayer);
-
-        EdgeOrWall = Physics.Raycast(transform.position + dir * 0.8f, dir, 0.2f, edgeLayer);
-        if (isGrounded && gravity < 0)
-            gravity = 0f;
-
-        if (EdgeOrWall)
+        isNear = Physics.CheckSphere(transform.position, detectionZone, playerLayer);
+        EdgeOrWall = Physics.Raycast(transform.position + dir * 0.8f, dir, 0.3f, edgeLayer);
+        if (isNear)
         {
-            horizontal *= -1;
-            dir *= -1;
-            transform.Rotate(rotation);
+            if(transform.position.z>target.position.z+0.5f)
+            {
+                if (horizontal > 0) ;
+                    horizontal = -1;
+              
+                dir = Vector3.forward* -1;
+                transform.rotation = new Quaternion(0, 180, 0, 0);
+            }
+            else if(transform.position.z < target.position.z-0.5f)
+            {
+                if (horizontal < 0) ;
+                    horizontal =1;
+
+                dir = Vector3.forward;
+                transform.rotation = new Quaternion(0, 0, 0,0);
+            }
+            else
+            {
+                horizontal = 0;
+            }
+            if (EdgeOrWall && !jumped)
+            {
+                jumped = true;
+                gravity += Mathf.Sqrt(JumpHeight * -2f * Physics.gravity.y);
+            }
+
         }
+        else
+        {
+            if (EdgeOrWall)
+            {
+                horizontal *= -1;
+                dir *= -1;
+                transform.Rotate(rotation);
+            }
+        }
+      
+        if (isGrounded && gravity < 0)
+        {
+            gravity = 0f;
+            jumped = false;
+        }
+            
+
+        
         gravity += Physics.gravity.y * Time.deltaTime;
     }
 
 
     void FixedUpdate()
     {
-        float moveFactor = horizontal * Time.fixedDeltaTime;
-        Debug.DrawRay(ray.origin, ray.direction * 10);
+        
+        Debug.DrawRay(transform.position + dir * 0.8f, dir * 10);
+        if (isNear)
+        {
 
-        rb.velocity = new Vector3(0, gravity, moveFactor * 10f);
+            float moveFactor = horizontal*followingSpeed * Time.fixedDeltaTime;
+            rb.velocity = new Vector3(0, gravity, moveFactor * 10);
+        }
+        else
+        {
+            float moveFactor = horizontal * walkingSpeed * Time.fixedDeltaTime;
+            rb.velocity = new Vector3(0, gravity, moveFactor * 10);
+        }
 
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color= new Color(1, 0, 0, 0.5f);
+        Gizmos.DrawSphere(transform.position, detectionZone);
     }
 
 }
