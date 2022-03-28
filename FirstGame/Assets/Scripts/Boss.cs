@@ -13,7 +13,7 @@ public class Boss : MonoBehaviour
     bool canBeHit = true;
     bool isRed = false;
     private float invincibilityTime = 0.15f;
-    private float invincibilityDuration = 0.5f;
+    private float invincibilityDuration =1f;
     Color tempColor = new Color();
     Renderer temp;
     // Start is called before the first frame update
