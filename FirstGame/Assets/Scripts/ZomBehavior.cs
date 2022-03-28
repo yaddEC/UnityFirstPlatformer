@@ -57,9 +57,6 @@ public class ZomBehavior : MonoBehaviour
 
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawSphere(transform.position + (Vector3.up * 0.8f) * CapsuleCollider.radius, CapsuleCollider.radius);
-    }
+    
 
 }

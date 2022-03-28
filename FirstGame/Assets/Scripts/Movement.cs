@@ -10,11 +10,12 @@ public class Movement : MonoBehaviour
     private CapsuleCollider CapsuleCollider;
     public LayerMask groundLayer;
     public LayerMask bumpLayer;
- 
+    public bool booli = false;
+
     public float GroundDistance = 5.1f;
     public float JumpHeight = 5f;
     [Range(0, 100f)] [SerializeField] private float speed = 40f;
-    Ray ray;
+    
     public float gravity;
 
 
@@ -43,9 +44,9 @@ public class Movement : MonoBehaviour
 
         pos = transform.position + Vector3.up * CapsuleCollider.radius;
         isGrounded = Physics.CheckSphere(pos, CapsuleCollider.radius, groundLayer);
-       
-       
 
+
+        booli = Physics.Raycast(transform.position, Vector3.down, 0.1f, bumpLayer);
         horizontal = Input.GetAxisRaw("Horizontal") * speed; 
 
         if (isGrounded && gravity < 0)
@@ -62,7 +63,7 @@ public class Movement : MonoBehaviour
     {
         float moveFactor = horizontal * Time.fixedDeltaTime;
 
-        Debug.DrawRay(ray.origin, ray.direction * 10);
+        Debug.DrawRay(transform.position + Vector3.down*0.2f, Vector3.down * 10);
         
         rb.velocity = new Vector3(0, gravity, moveFactor * 10f);
         

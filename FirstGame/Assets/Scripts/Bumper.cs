@@ -23,8 +23,10 @@ public class Bumper : MonoBehaviour
     }
     void OnCollisionEnter(Collision other)
     {
-        Debug.Log("bumped");
-        Bouncing(other.gameObject, 10);
-    
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("bumped");
+        Bouncing(other.gameObject, 7);
+        }
     }
 }

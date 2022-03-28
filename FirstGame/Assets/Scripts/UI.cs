@@ -11,5 +11,8 @@ public class UI : MonoBehaviour
         SceneManager.LoadScene("TestLevel");
     }
 
-    
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }

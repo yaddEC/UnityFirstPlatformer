@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HeadCollision : MonoBehaviour
 {
-    public LayerMask edgeLayer;
+    public LayerMask bumperLayer;
     public GameObject Enemy;
     Bumper bounceHead;
     // Start is called before the first frame update
@@ -23,11 +23,15 @@ public class HeadCollision : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            if (Physics.Raycast(other.transform.position, Vector3.down, 0.2f, edgeLayer));
+            if (Physics.Raycast(other.transform.position, Vector3.down, 0.1f, bumperLayer));
             {
-                Debug.Log("ded");
-                bounceHead.Bouncing(other.gameObject, 2);
-                Destroy(Enemy);
+                if (other.gameObject.GetComponent<Rigidbody>().velocity.y < 0)
+                {
+                    Debug.Log("ded");
+                    bounceHead.Bouncing(other.gameObject, 2);
+                    Destroy(Enemy);
+                }
+                    
 
             }
         }
